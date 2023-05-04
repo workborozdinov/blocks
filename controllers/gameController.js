@@ -91,7 +91,6 @@ export const joinOrCreateRoom = (ws, event) => {
 
     if (type === MessageTypes.JOIN_OR_CREATE_ROOM) {
         const { playerID, battleID } = params;
-        
         const targetRoom = rooms.get(battleID);
         const matchData = CustomDB.get(battleID);
         console.log(MessageTypes.JOIN_OR_CREATE_ROOM)
@@ -119,6 +118,7 @@ export const joinOrCreateRoom = (ws, event) => {
             console.log(`room ${battleID} created successfully!!!`);
 
             const player = new Player(ws, playerID, room.emitter, matchData.players[playerID].name);
+
             room.addPlayer(player);
             console.log(`player ${playerID} added successfully`);
 
@@ -351,7 +351,6 @@ const onRoomClosed = (room, player1, player2) => {
 
     const isDeletedRoom = rooms.delete(room.id);
 
-    // console.log('winner score:' + winner.score);
     console.log(`room ${room.id} deleted status ${isDeletedRoom}`);
 }
 

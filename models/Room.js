@@ -104,7 +104,7 @@ export class Room {
 
         this.#puzzlePool = new PuzzlePool();
 
-        const iterator = this.#players.value();
+        const iterator = this.#players.values();
 
         const player1 = iterator.next().value;
         const player2 = iterator.next().value; 
