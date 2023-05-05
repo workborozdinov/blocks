@@ -32,8 +32,8 @@ export const getClient = (req, res) => {
         }
 
         axios.post('https://mindplays.com/api/v1/info_game', data)
-            .then((res)=>{
-                const responseData = res.data.data;
+            .then((response)=>{
+                const responseData = response.data.data;
                 const user = responseData.user;
                 
                 let matchData = CustomDB.getData(battle_id);
@@ -92,7 +92,7 @@ export const joinOrCreateRoom = (ws, event) => {
     if (type === MessageTypes.JOIN_OR_CREATE_ROOM) {
         const { playerID, battleID } = params;
         const targetRoom = rooms.get(battleID);
-        const matchData = CustomDB.get(battleID);
+        const matchData = CustomDB.getData(battleID);
         console.log(MessageTypes.JOIN_OR_CREATE_ROOM)
 
         if (targetRoom) {
@@ -103,7 +103,7 @@ export const joinOrCreateRoom = (ws, event) => {
                 console.log(`the player ${playerID} is already in the game!!!`);
                 targetRoom.updateDataPlayer(targetPlayer, ws);
             } else {
-                const player = new Player(ws, playerID, targetRoom.emitter, matchData.players[playerID].name);
+                const player = new Player(ws, playerID, targetRoom.emitter, matchData.players[playerID].user.name);
 
                 if (targetRoom.isRoomFull()) {
                     console.log(`room ${battleID} is full`)
@@ -117,7 +117,7 @@ export const joinOrCreateRoom = (ws, event) => {
             const room = new Room(battleID, systemEmitter);
             console.log(`room ${battleID} created successfully!!!`);
 
-            const player = new Player(ws, playerID, room.emitter, matchData.players[playerID].name);
+            const player = new Player(ws, playerID, room.emitter, matchData.players[playerID].user.name);
 
             room.addPlayer(player);
             console.log(`player ${playerID} added successfully`);
